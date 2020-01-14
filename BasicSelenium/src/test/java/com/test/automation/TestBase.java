@@ -17,7 +17,7 @@ public class TestBase
 	protected void tearDown()
 	{
 		if (driver != null)
-			driver.close();
+			driver.quit();
 	}
 
 	protected WebDriver getWebDriver()
