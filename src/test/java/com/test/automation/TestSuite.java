@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 import com.test.pages.LoginPage;
 
@@ -26,18 +28,20 @@ public class TestSuite extends TestBase
 	@Order(1)
 	public void goToUrl()
 	{
-		driver.get("http://www.google.com");
-		Assertions.assertEquals("Google", driver.getTitle());
+		driver.get("http://www.newtours.demoaut.com");
+		// Assertions.assertEquals("Google", driver.getTitle());
 	}
 
-	@Test
+	@ParameterizedTest(name = "Iteration #{index} with UserName: {0} and Password: {1}")
 	@Order(2)
-	public void logInUsingValidUser()
+	@CsvFileSource(resources = "/data.csv")
+	public void logInUsingValidUser(final String userName, final String userPassword)
 	{
 		final LoginPage loginPage = new LoginPage(driver);
-		loginPage.setUserName("muhin");
-		loginPage.setPassword("muhin");
+		loginPage.setUserName(userName);
+		loginPage.setPassword(userPassword);
 		loginPage.clicLoginButton();
 		Assertions.assertEquals("Find a Flight: Mercury Tours:", driver.getTitle());
+		driver.get("http://www.newtours.demoaut.com");
 	}
 }
